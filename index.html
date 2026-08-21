@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Học Tập Mi</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: linear-gradient(135deg, #0f0c20 0%, #1a0b2e 50%, #260c3e 100%);
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-sub: #b3a2c7;
+      --accent-color: #9d4edd;
+      --accent-gradient: linear-gradient(90deg, #7b2cbf, #9d4edd);
+      --border-color: rgba(157, 78, 221, 0.2);
+      --table-header-bg: rgba(123, 44, 191, 0.3);
+      --input-bg: rgba(255, 255, 255, 0.07);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 50%, #d8b4fe 100%);
+      --bg-card: rgba(255, 255, 255, 0.7);
+      --bg-card-hover: rgba(255, 255, 255, 0.9);
+      --text-main: #240046;
+      --text-sub: #5a189a;
+      --accent-color: #7b2cbf;
+      --accent-gradient: linear-gradient(90deg, #7b2cbf, #9d4edd);
+      --border-color: rgba(123, 44, 191, 0.2);
+      --table-header-bg: rgba(157, 78, 221, 0.2);
+      --input-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body {
+      background: var(--bg-primary);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+
+    /* Header & Nav */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    nav button {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 8px 16px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    nav button.active, nav button:hover {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    /* Container & Section */
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: var(--text-main);
+      border-left: 4px solid var(--accent-color);
+      padding-left: 10px;
+    }
+
+    /* Form Inputs & Buttons */
+    input, select, button {
+      outline: none;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    input, select {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 15px;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: var(--table-header-bg);
+      color: var(--text-main);
+    }
+
+    td input {
+      width: 100%;
+      text-align: center;
+      background: transparent;
+      border: none;
+    }
+
+    /* Overview Section */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .subject-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .subject-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-3px);
+    }
+
+    .subject-card i {
+      font-size: 2.5rem;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+
+    /* Practice Section */
+    .quiz-container {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .question-box {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border-left: 3px solid var(--accent-color);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px;
+      text-align: left;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .badge-gioi { background: #2ed573; color: black; }
+    .badge-kha { background: #ffa502; color: black; }
+    .badge-dat { background: #70a1ff; color: black; }
+    .badge-canthan { background: #ff4757; color: white; }
+
+    .alert-box {
+      background: rgba(255, 71, 87, 0.2);
+      border: 1px solid #ff4757;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo"><i class="fas fa-graduation-cap"></i> Học Tập Mi</div>
+    <nav>
+      <button class="nav-btn active" onclick="showSection('planner')">Planner</button>
+      <button class="nav-btn" onclick="showSection('overview')">Tổng quan khối A</button>
+      <button class="nav-btn" onclick="showSection('practice')">Luyện bài tập</button>
+      <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- PLANNER SECTION -->
+    <div id="planner" class="section active">
+      
+      <!-- Lịch kiểm tra -->
+      <div class="card">
+        <h2><i class="fas fa-bell"></i> Lịch kiểm tra</h2>
+        <div id="reminderAlert" class="alert-box">
+          <i class="fas fa-exclamation-triangle"></i> <strong>Nhắc nhở:</strong> <span id="reminderText"></span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="examName" placeholder="Tên bài kiểm tra (VD: 1 Tiết Vật Lí)">
+          <input type="datetime-local" id="examDate">
+          <button class="btn-primary" onclick="addExam()"><i class="fas fa-plus"></i> Thêm lịch</button>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Tên bài kiểm tra</th>
+                <th>Thời gian</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="examTableBody">
+              <!-- Render by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Thời khóa biểu -->
+      <div class="card">
+        <h2><i class="fas fa-calendar-alt"></i> Thời khóa biểu</h2>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Khung giờ</th>
+                <th>Thứ 2</th>
+                <th>Thứ 3</th>
+                <th>Thứ 4</th>
+                <th>Thứ 5</th>
+                <th>Thứ 6</th>
+                <th>Thứ 7</th>
+                <th>Chủ Nhật</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleBody">
+              <!-- JS Render Timetable from 17h to 22h30 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Theo dõi điểm số -->
+      <div class="card">
+        <h2><i class="fas fa-chart-line"></i> Theo dõi điểm số</h2>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th rowspan="2">Môn học</th>
+                <th colspan="5">Điểm thường xuyên (1-5)</th>
+                <th rowspan="2">Giữa kỳ</th>
+                <th rowspan="2">Cuối kỳ</th>
+                <th rowspan="2">ĐTB</th>
+                <th rowspan="2">Xếp loại</th>
+              </tr>
+              <tr>
+                <th>Đ1</th><th>Đ2</th><th>Đ3</th><th>Đ4</th><th>Đ5</th>
+              </tr>
+            </thead>
+            <tbody id="gradeTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+        <button class="btn-primary" style="margin-top: 15px;" onclick="calculateGrades()">Tính điểm trung bình</button>
+      </div>
+    </div>
+
+    <!-- TỔNG QUAN KHỐI A SECTION -->
+    <div id="overview" class="section">
+      <div class="card">
+        <h2><i class="fas fa-layer-group"></i> Chọn Khối Lớp</h2>
+        <div class="input-group">
+          <select id="classSelect" onchange="renderOverview()">
+            <option value="10">Lớp 10</option>
+            <option value="11">Lớp 11</option>
+            <option value="12">Lớp 12</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-4" id="overviewGrid">
+        <!-- JS Rendered cards for Toán, Lí, Hóa, Anh -->
+      </div>
+    </div>
+
+    <!-- LUYỆN BÀI TẬP SECTION -->
+    <div id="practice" class="section">
+      <div class="card">
+        <h2><i class="fas fa-edit"></i> Tùy chỉnh bài luyện tập</h2>
+        <div class="input-group">
+          <select id="practiceSubject" onchange="updateChapters()">
+            <option value="toan">Toán học</option>
+            <option value="li">Vật lí</option>
+            <option value="hoa">Hóa học</option>
+          </select>
+
+          <select id="practiceChapter">
+            <!-- JS Rendered Chapters -->
+          </select>
+
+          <select id="practiceLevel">
+            <option value="dễ">Độ khó: Dễ</option>
+            <option value="trungbinh">Độ khó: Trung bình</option>
+            <option value="kho">Độ khó: Khó</option>
+          </select>
+
+          <select id="practiceAmount">
+            <option value="10">10 Câu</option>
+            <option value="20">20 Câu</option>
+            <option value="50">50 Câu</option>
+          </select>
+
+          <select id="practiceType">
+            <option value="tracnghiem">Trắc nghiệm</option>
+            <option value="tuluan">Tự luận</option>
+            <option value="tinhtoan">Tính toán ngắn</option>
+          </select>
+
+          <button class="btn-primary" onclick="startPractice()"><i class="fas fa-play"></i> Bắt đầu làm bài</button>
+        </div>
+      </div>
+
+      <div id="quizContainer" class="card quiz-container">
+        <h3 id="quizTitle" style="margin-bottom: 15px;"></h3>
+        <div id="quizQuestions"></div>
+        <button class="btn-primary" onclick="submitQuiz()">Nộp bài</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- GIAO DIỆN SÁNG/TỐI ---
+    function toggleTheme() {
+      const body = document.body;
+      const themeBtn = document.querySelector('.theme-toggle i');
+      if (body.getAttribute('data-theme') === 'light') {
+        body.removeAttribute('data-theme');
+        themeBtn.className = 'fas fa-moon';
+      } else {
+        body.setAttribute('data-theme', 'light');
+        themeBtn.className = 'fas fa-sun';
+      }
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(sectionId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // --- THỜI KHÓA BIỂU (17h - 22h30) ---
+    const timeSlots = ["17h00", "17h30", "18h00", "18h30", "19h00", "19h30", "20h00", "20h30", "21h00", "21h30", "22h00", "22h30"];
+    
+    function initTimetable() {
+      const tbody = document.getElementById('scheduleBody');
+      tbody.innerHTML = '';
+      timeSlots.forEach(time => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `<strong>${time}</strong>`;
+        for (let i = 0; i < 7; i++) {
+          tr.innerHTML += `<td contenteditable="true"></td>`;
+        }
+        tbody.appendChild(tr);
+      });
+    }
+
+    // --- LỊCH KIỂM TRA & NHẮC NHỞ TRƯỚC 3 NGÀY ---
+    let exams = [];
+
+    function addExam() {
+      const name = document.getElementById('examName').value;
+      const dateVal = document.getElementById('examDate').value;
+
+      if (!name || !dateVal) {
+        alert("Vui lòng nhập đầy đủ thông tin bài kiểm tra!");
+        return;
+      }
+
+      exams.push({ name, date: new Date(dateVal) });
+      document.getElementById('examName').value = '';
+      renderExams();
+      checkReminders();
+    }
+
+    function renderExams() {
+      const tbody = document.getElementById('examTableBody');
+      tbody.innerHTML = '';
+      exams.forEach((exam, index) => {
+        const dateStr = exam.date.toLocaleString('vi-VN');
+        tbody.innerHTML += `
+          <tr>
+            <td>${exam.name}</td>
+            <td>${dateStr}</td>
+            <td><span class="badge badge-dat">Đã lên lịch</span></td>
+            <td><button style="background:#ff4757; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="deleteExam(${index})">Xóa</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteExam(index) {
+      exams.splice(index, 1);
+      renderExams();
+      checkReminders();
+    }
+
+    function checkReminders() {
+      const alertBox = document.getElementById('reminderAlert');
+      const reminderText = document.getElementById('reminderText');
+      const now = new Date();
+      let upcomingExams = [];
+
+      exams.forEach(exam => {
+        const diffTime = exam.date - now;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+        if (diffDays > 0 && diffDays <= 3) {
+          upcomingExams.push(`${exam.name} (${Math.ceil(diffDays)} ngày nữa)`);
+        }
+      });
+
+      if (upcomingExams.length > 0) {
+        alertBox.style.display = 'block';
+        reminderText.innerText = upcomingExams.join(', ');
+      } else {
+        alertBox.style.display = 'none';
+      }
+    }
+
+    // --- BẢNG ĐIỂM SỐ ---
+    const subjects = ["Toán", "Vật lí", "Hóa học", "Tiếng Anh", "Ngữ Văn", "Sinh học", "Lịch sử", "Địa lí"];
+
+    function initGradeTable() {
+      const tbody = document.getElementById('gradeTableBody');
+      tbody.innerHTML = '';
+      subjects.forEach(sub => {
+        tbody.innerHTML += `
+          <tr data-subject="${sub}">
+            <td><strong>${sub}</strong></td>
+            <td><input type="number" min="0" max="10" class="tx"></td>
+            <td><input type="number" min="0" max="10" class="tx"></td>
+            <td><input type="number" min="0" max="10" class="tx"></td>
+            <td><input type="number" min="0" max="10" class="tx"></td>
+            <td><input type="number" min="0" max="10" class="tx"></td>
+            <td><input type="number" min="0" max="10" class="gk"></td>
+            <td><input type="number" min="0" max="10" class="ck"></td>
+            <td class="dtb">-</td>
+            <td class="xeploai">-</td>
+          </tr>
+        `;
+      });
+    }
+
+    function calculateGrades() {
+      const rows = document.querySelectorAll('#gradeTableBody tr');
+      
+      rows.forEach(row => {
+        const txInputs = row.querySelectorAll('.tx');
+        const gkInput = row.querySelector('.gk').value;
+        const ckInput = row.querySelector('.ck').value;
+
+        let txSum = 0;
+        let txCount = 0;
+
+        txInputs.forEach(input => {
+          if (input.value !== '') {
+            txSum += parseFloat(input.value);
+            txCount++;
+          }
+        });
+
+        let totalScore = txSum;
+        let totalCoef = txCount;
+
+        if (gkInput !== '') {
+          totalScore += parseFloat(gkInput) * 2;
+          totalCoef += 2;
+        }
+
+        if (ckInput !== '') {
+          totalScore += parseFloat(ckInput) * 3;
+          totalCoef += 3;
+        }
+
+        const dtbTd = row.querySelector('.dtb');
+        const xeploaiTd = row.querySelector('.xeploai');
+
+        if (totalCoef > 0) {
+          const dtb = (totalScore / totalCoef).toFixed(1);
+          dtbTd.innerText = dtb;
+
+          if (dtb >= 8.0) {
+            xeploaiTd.innerHTML = `<span class="badge badge-gioi">Giỏi</span>`;
+          } else if (dtb >= 6.5) {
+            xeploaiTd.innerHTML = `<span class="badge badge-kha">Khá</span>`;
+          } else if (dtb >= 5.0) {
+            xeploaiTd.innerHTML = `<span class="badge badge-dat">Đạt</span>`;
+          } else {
+            xeploaiTd.innerHTML = `<span class="badge badge-canthan">Cần cố gắng</span>`;
+          }
+        } else {
+          dtbTd.innerText = '-';
+          xeploaiTd.innerText = '-';
+        }
+      });
+    }
+
+    // --- TỔNG QUAN KHỐI A (10, 11, 12) ---
+    const overviewData = {
+      "10": {
+        "Toán": "Mệnh đề, Tập hợp, Bất phương trình, Hàm số bậc hai, Lượng giác.",
+        "Vật lí": "Động lực học, Chuyển động biến đổi đều, Năng lượng, Công cơ học.",
+        "Hóa học": "Cấu tạo nguyên tử, Bảng tuần hoàn, Liên kết hóa học, Phản ứng Oxi hóa - xóa.",
+        "Tiếng Anh": "Thì hiện tại/quá khứ, Câu so sánh, Từ vựng Unit 1-10 lớp 10."
+      },
+      "11": {
+        "Toán": "Hàm số lượng giác, Tổ hợp - Xác suất, Dãy số, Đạo hàm, Hình học không gian.",
+        "Vật lí": "Dao động điều hòa, Sóng cơ, Điện tích - Điện trường, Dòng điện một chiều.",
+        "Hóa học": "Cân bằng hóa học, Nitrogen - Sulfur, Hóa học hữu cơ, Hydrocarbon.",
+        "Tiếng Anh": "Câu điều kiện, Động từ nguyên mẫu, Mệnh đề quan hệ, Câu bị động."
+      },
+      "12": {
+        "Toán": "Ứng dụng đạo hàm, Mũ và Logarit, Nguyên hàm - Tích phân, Tọa độ Oxyz.",
+        "Vật lí": "Vật lí nhiệt, Khí lý tưởng, Từ trường, Vật lí hạt nhân.",
+        "Hóa học": "Ester - Lipid, Carbohydrate, Polymer, Pin điện hóa và Điện phân.",
+        "Tiếng Anh": "Thực hành Đọc - Hiểu tổng hợp, Câu đảo ngữ, Trắc nghiệm đề thi THPT QG."
+      }
+    };
+
+    function renderOverview() {
+      const cls = document.getElementById('classSelect').value;
+      const grid = document.getElementById('overviewGrid');
+      grid.innerHTML = '';
+
+      const data = overviewData[cls];
+      const icons = { "Toán": "fa-calculator", "Vật lí": "fa-atom", "Hóa học": "fa-flask", "Tiếng Anh": "fa-language" };
+
+      for (let sub in data) {
+        grid.innerHTML += `
+          <div class="subject-card">
+            <i class="fas ${icons[sub]}"></i>
+            <h3>${sub}</h3>
+            <p style="margin-top:10px; color: var(--text-sub); font-size: 0.9rem;">${data[sub]}</p>
+          </div>
+        `;
+      }
+    }
+
+    // --- LUYỆN BÀI TẬP ---
+    const chaptersData = {
+      toan: ["Chương 1: Đại số & Hàm số", "Chương 2: Hình học space", "Chương 3: Tích phân & Ứng dụng"],
+      li: ["Chương 1: Dao động điều hòa", "Chương 2: Sóng cơ & Sóng âm", "Chương 3: Dòng điện xoay chiều", "Chương 4: Vật lí Nhiệt"],
+      hoa: ["Chương 1: Hóa học Hữu cơ", "Chương 2: Điện phân & Pin điện", "Chương 3: Tốc độ phản ứng"]
+    };
+
+    function updateChapters() {
+      const sub = document.getElementById('practiceSubject').value;
+      const chapterSelect = document.getElementById('practiceChapter');
+      chapterSelect.innerHTML = '';
+      
+      chaptersData[sub].forEach(ch => {
+        chapterSelect.innerHTML += `<option value="${ch}">${ch}</option>`;
+      });
+    }
+
+    function startPractice() {
+      const sub = document.getElementById('practiceSubject').selectedOptions[0].text;
+      const ch = document.getElementById('practiceChapter').value;
+      const level = document.getElementById('practiceLevel').selectedOptions[0].text;
+      const type = document.getElementById('practiceType').selectedOptions[0].text;
+      const amount = document.getElementById('practiceAmount').value;
+
+      const quizContainer = document.getElementById('quizContainer');
+      const quizTitle = document.getElementById('quizTitle');
+      const quizQuestions = document.getElementById('quizQuestions');
+
+      quizTitle.innerText = `Bài tập ${sub} - ${ch} (${level} - ${type} - ${amount} câu)`;
+      quizQuestions.innerHTML = '';
+
+      // Giả lập câu hỏi mẫu
+      for (let i = 1; i <= Math.min(amount, 3); i++) {
+        quizQuestions.innerHTML += `
+          <div class="question-box">
+            <p><strong>Câu ${i}:</strong> Bài tập mẫu dành cho dạng ${type} môn ${sub} thuộc ${ch}?</p>
+            <div class="options">
+              <button class="option-btn">A. Phương án đáp án A</button>
+              <button class="option-btn">B. Phương án đáp án B</button>
+              <button class="option-btn">C. Phương án đáp án C</button>
+              <button class="option-btn">D. Phương án đáp án D</button>
+            </div>
+          </div>
+        `;
+      }
+
+      quizContainer.style.display = 'block';
+    }
+
+    function submitQuiz() {
+      alert("Bạn đã hoàn thành bài tập thành công!");
+      document.getElementById('quizContainer').style.display = 'none';
+    }
+
+    // --- KHỞI TẠO BAN ĐẦU ---
+    window.onload = function() {
+      initTimetable();
+      initGradeTable();
+      renderOverview();
+      updateChapters();
+    };
+  </script>
+</body>
+</html>
